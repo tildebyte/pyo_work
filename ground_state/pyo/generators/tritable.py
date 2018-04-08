@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 # This generator is taken verbatim from the Pyo documentation.
 from pyo import PyoTableObject, Server, Osc, HarmTable

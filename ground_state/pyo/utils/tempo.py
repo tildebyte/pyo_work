@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 
 # This is a utilty class for pyo <http://code.google.com/p/pyo>, representing

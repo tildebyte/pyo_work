@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 
 # This is a utilty function for pyo <http://code.google.com/p/pyo> which
