@@ -11,9 +11,7 @@
 
 from pyo import PyoObject, CosTable, EQ, Osc
 from pyo import Sine, TrigEnv, convertArgsToLists
-# For test
-# from pyo import Delay, Metro, Pan, Reverb, Server, Snap, TrigXnoiseMidi
-from ground_state.pyo.generators import TriTable
+from ground_state.pyo.generators.tritable import TriTable
 
 
 class Whale(PyoObject):
@@ -62,13 +60,13 @@ class Whale(PyoObject):
                                 (6143, 0.95), (8191, 0.0)])
         # triEnvTable.graph()
         self._triEnv = TrigEnv(self._trig, triEnvTable, dur=self._dur)
+
         # TriTable Table oscillator from the pyo docs.
         triTable = TriTable(order=50, size=24000).normalize()
+
         self._osc = Osc(triTable, self._freq, interp=4,
                         mul=((self._triEnv + self._lfo) * self._mul))
-
         self._whale = EQ(self._osc, freq=self._freq * 16, q=1, type=1)
-
         self._base_objs = self._whale.getBaseObjects()
 
     def setFreq(self, x):

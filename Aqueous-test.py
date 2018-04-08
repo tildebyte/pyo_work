@@ -12,8 +12,8 @@
 # (at your option) any later version <http://www.gnu.org/licenses/>.
 from pyo import Delay, Snap, Metro, TrigXnoiseMidi, WGVerb
 
-from ground_state.pyo.instruments.Aqueous import Aqueous
-from ground_state.pyo.utils.Tempo import Tempo
+from ground_state.pyo.instruments.aqueous import Aqueous
+from ground_state.pyo.utils.tempo import Tempo
 from ground_state.pyo.utils.dbToAmp import dbToAmp
 from ground_state.pyo.utils.serverSetup import serverSetup
 
@@ -22,7 +22,6 @@ t = Tempo(63.5)
 
 # Windows
 s = serverSetup(6, dbToAmp(-12))
-
 # OSX
 # s = serverSetup(2, dbToAmp(0))
 

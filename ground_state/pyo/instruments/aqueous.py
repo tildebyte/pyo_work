@@ -10,8 +10,6 @@
 # (at your option) any later version <http://www.gnu.org/licenses/>.
 
 from pyo import PyoObject, Adsr, ButBP, EQ, Mix, Osc, SawTable
-# For test
-# from pyo import Delay, Metro, Server, Snap, TrigXnoiseMidi, WGVerb
 
 
 class Aqueous(PyoObject):
@@ -99,9 +97,7 @@ class Aqueous(PyoObject):
         # Tweak filter levels
         reson1Dummy.setMul(self._amp1Env * 0.3)
         reson2Dummy.setMul(self._amp2Env * 0.4842)
-
         filtersDummy = reson1Dummy + reson2Dummy
-
         bpf = ButBP(filtersDummy, freq=325, q=1)
 
         # Volume knob
@@ -178,7 +174,6 @@ if __name__ == "__main__":
     s = Server(duplex=0).boot()
     s.setAmp(0.1023)
     s.start()
-
     t = 3.776
     metro = Metro(time=t * 2).play()
     note = TrigXnoiseMidi(metro, dist=0, mrange=(30, 77))
@@ -188,10 +183,7 @@ if __name__ == "__main__":
 
     delay = Delay(a, delay=t * 0.75, feedback=0.6, maxdelay=t * 0.75,
                   mul=0.445)
-
     wetdry = delay + a
-
     d = WGVerb(wetdry, feedback=[0.73, 0.76], cutoff=5000,
                bal=0.25, mul=0.2985).out()
-
     s.gui(locals())

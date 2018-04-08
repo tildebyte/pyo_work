@@ -1,1 +1,1 @@
-from tritable import TriTable
+# from tritable import TriTable
