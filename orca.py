@@ -21,31 +21,27 @@ from ground_state.pyo.utils.serverSetup import serverSetup
 
 t = Tempo(63.5)  # q=944ms, w=3.776s
 # Windows
-s = serverSetup(10, 700)
-# s.shutdown()
-# s.reinit()
-# s.boot()
-# s.start()
+# server = serverSetup(10, 700)
 # OSX
-# s = serverSetup(2, 'coreaudio')
-metroW = Metro(time=t.whole * 4).play()
-metroA = Metro(time=t.whole).play()
-noteW = TrigXnoiseMidi(metroW, dist=0, mrange=(30, 41))
-noteA = TrigXnoiseMidi(metroA, dist=0, mrange=(42, 83))
-snapW = Snap(noteW, choice=[0, 2, 4, 5, 7, 9, 11], scale=1)
-snapA = Snap(noteA, choice=[0, 2, 4, 5, 7, 9, 11], scale=1)
-w = Whale(snapW, metroW, dur=t.whole, mul=dbToAmp(-9.0))
-a = Aqueous(snapA, dur=t.whole * 2, mul=dbToAmp(-12.0))
+server = serverSetup(2, 192, 'coreaudio')
+metroWhale = Metro(time=t.whole * 4).play()
+metroAqueous = Metro(time=t.whole).play()
+noteWhale = TrigXnoiseMidi(metroWhale, dist=0, mrange=(30, 41))
+noteAqeous = TrigXnoiseMidi(metroAqueous, dist=0, mrange=(42, 83))
+snapWhale = Snap(noteWhale, choice=[0, 2, 4, 5, 7, 9, 11], scale=1)
+snapAqueous = Snap(noteAqeous, choice=[0, 2, 4, 5, 7, 9, 11], scale=1)
+whale = Whale(snapWhale, metroWhale, dur=t.whole, mul=dbToAmp(-9.0))
+aqueous = Aqueous(snapAqueous, dur=t.whole * 2, mul=dbToAmp(-12.0))
 
 
 def noteOn():
-    a.play()
+    aqueous.play()
 
 playAqueous = Pattern(function=noteOn, time=t.whole * 2).play()
-delayW = Delay(w, delay=t.whole, feedback=0.64,
+delayWhale = Delay(whale, delay=t.whole, feedback=0.64,
                maxdelay=t.whole, mul=dbToAmp(-6.0))
-wetdry = delayW + w + a
+wetdry = delayWhale + whale + aqueous
 volume = wetdry * 1.0
 volume.setMul(dbToAmp(-3.0))
-rev = STRev(wetdry, revtime=2, bal=dbToAmp(-7.95), roomSize=1.4).out()
-s.gui(locals())
+reverb = STRev(wetdry, revtime=2, bal=dbToAmp(-7.95), roomSize=1.4).out()
+server.gui(locals())
