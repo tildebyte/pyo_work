@@ -42,6 +42,7 @@ class Aqueous(PyoObject):
 
     """
     def __init__(self, freq=1000, dur=1, mul=1, add=0):
+        PyoObject.__init__(self, mul, add)
         self._freq = freq
         self._dur = dur
         self._mul = mul
