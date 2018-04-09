@@ -131,23 +131,6 @@ class Aqueous(PyoObject):
     def __dir__(self):
         return ["freq", "mul", "add"]
 
-    # Works, but not particularly useful. It would be nice to show sliders
-    # for some of the muls e.g. the two oscillators...
-    # def ctrl(self, map_list=None, title=None, wxnoserver=False):
-    #     self._map_list = [SLMap(18.0, 400.0, "log", "reson1 freq",
-    #                             self._reson1.freq),
-    #                       SLMap(0.00001, 500.0, "log", "reson1 q",
-    #                             self._reson1.q),
-    #                       SLMapMul(self._reson1.mul),
-    #                       SLMap(18.0, 1700.0, "log", "reson2 freq",
-    #                             self._reson2.freq),
-    #                       SLMap(0.00001, 500.0, "log", "reson2 q",
-    #                             self._reson2.q),
-    #                       SLMap(18.0, 5000.0, "log", "filter freq",
-    #                             self._aqueous.freq),
-    #                       SLMapMul(self._mul)]
-    #     PyoObject.ctrl(self, map_list, title, wxnoserver)
-
     def play(self, dur=0, delay=0):
         self._reson1Env.play(dur, delay)
         self._reson2Env.play(dur, delay)
@@ -169,18 +152,23 @@ class Aqueous(PyoObject):
         self._amp2Env.play(dur, delay)
         return PyoObject.out(self, chnl, inc, dur, delay)
 
-# Run this script to test the Aqueous object.
+# Run this script to test the Aqueous class.
 if __name__ == "__main__":
+    from pyo import Delay, Metro, Server, Snap, TrigXnoiseMidi, WGVerb, Pattern
+
     s = Server(duplex=0).boot()
-    s.setAmp(0.1023)
+    s.setAmp(1.0)
     s.start()
     t = 3.776
-    metro = Metro(time=t * 2).play()
-    note = TrigXnoiseMidi(metro, dist=0, mrange=(30, 77))
-    snap = Snap(note, choice=[0, 2, 4, 5, 7, 9, 11], scale=1)
+    metroAqueous = Metro(time=t * 2).play()
+    noteAqeous = TrigXnoiseMidi(metroAqueous, dist=0, mrange=(42, 83))
+    snapAqueous = Snap(noteAqeous, choice=[0, 2, 4, 5, 7, 9, 11], scale=1)
+    a = Aqueous(snapAqueous, dur=t * 0.75, mul=0.9)
 
-    a = Aqueous(snap, metro, t * 0.75, mul=0.9)
+    def noteOn():
+        a.play()
 
+    playAqueous = Pattern(function=noteOn, time=t * 2).play()
     delay = Delay(a, delay=t * 0.75, feedback=0.6, maxdelay=t * 0.75,
                   mul=0.445)
     wetdry = delay + a

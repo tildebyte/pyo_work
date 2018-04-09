@@ -72,7 +72,9 @@ class TriTable(PyoTableObject):
 
 # Run the script to test the TriTable object.
 if __name__ == "__main__":
-    s = Server().boot()
+    s = Server(duplex=0).boot()
+    s.setAmp(0.05)
+    s.start()
     t = TriTable(10, 8192)
     t.view()
     a = Osc(t, 500, mul=.3).out()

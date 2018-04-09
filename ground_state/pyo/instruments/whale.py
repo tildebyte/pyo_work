@@ -136,12 +136,6 @@ class Whale(PyoObject):
     def dur(self, x):
         self.setDur(x)
 
-    # This doesn't work (causes the LFO to stop working, reason unknown).
-    # Hmm...
-    # def ctrl(self, map_list=None, title=None, wxnoserver=False):
-    #     self._map_list = [SLMapMul(self._mul)]
-    #     PyoObject.ctrl(self, map_list, title, wxnoserver)
-
     def play(self, dur=0, delay=0):
         self._lfoEnv.play(dur, delay)
         self._lfo.play(dur, delay)
@@ -163,16 +157,21 @@ class Whale(PyoObject):
         self._osc.out(dur, delay)
         return PyoObject.out(self, chnl, inc, dur, delay)
 
-# Run this script to test the Whale object.
-# Broken. We don't have access to the TriTable object from here
+# Run this script to test the Whale class.
+# Broken. We don't have access to the TriTable class from here
 # if __name__ == "__main__":
+#     from pyo import Delay, Metro, Pan, Freeverb, Server, Snap, TrigXnoiseMidi
+#     from ground_state.pyo.generators.tritable import TriTable
+#
 #     s = Server(duplex=0).boot()
+#     s.setAmp(1.0)
+#     s.start()
 #     t = 3.78
 #     metro = Metro(time=t).play()
 #     note = TrigXnoiseMidi(metro, dist=0, mrange=(16, 40))
 #     snap = Snap(note, choice=[0, 2, 4, 5, 7, 9, 11], scale=1)
 #     w = Whale(snap, metro, t)
-#     delay = Delay(a, delay=t, feedback=0.6, maxdelay=t, mul=0.5957)
+#     delay = Delay(w, delay=t, feedback=0.6, maxdelay=t, mul=0.5957)
 #     rev = Freeverb(delay + w, size=0.83, damp=0.5, bal=0.5708, mul=0.5821)
 #     pan = Pan(rev).out()
 #     s.gui(locals())
